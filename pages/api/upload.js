@@ -2,6 +2,7 @@ import multiparty from "multiparty";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import fs from "fs";
 import mime from "mime-types";
+
 export default async function handler(req, res) {
   const form = new multiparty.Form();
 
@@ -24,7 +25,6 @@ export default async function handler(req, res) {
   for (const file of files.file) {
     const ext = file.originalFilename.split(".").pop();
     const newFileName = Date.now() + "." + ext;
-    console.log({ ext, file });
     await client.send(
       new PutObjectCommand({
         Bucket: "luka-next-ecommerce",
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
     links.push(link);
   }
 
-  return res.json(links);
+  return res.json({ links });
 }
 
 export const config = {
