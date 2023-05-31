@@ -11,7 +11,8 @@ export default function ProductForm({
   description: currentDesc,
   price: currentPrice,
   state,
-  images: existingImages
+  images: existingImages,
+  category: assignedCategory
 }) {
   const [title, setTitle] = useState(currentTitle || "");
   const [description, setDescription] = useState(currentDesc || "");
@@ -19,6 +20,15 @@ export default function ProductForm({
   const [goToProducts, setGoToProducts] = useState(false);
   const [images, setImages] = useState(existingImages || []);
   const [isUploading, setIsUploading] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [category, setCategory] = useState(assignedCategory || "");
+  const router = useRouter();
+
+  useEffect(() => {
+    axios.get("/api/categories").then((res) => {
+      setCategories(res.data);
+    });
+  }, []);
 
   useEffect(() => {
     if (currentTitle) {
@@ -32,11 +42,9 @@ export default function ProductForm({
     }
   }, [currentTitle, currentPrice, currentDesc]);
 
-  const router = useRouter();
-
   async function saveProduct(e) {
     e.preventDefault();
-    const data = { title, description, price, images };
+    const data = { title, description, price, images, category };
     if (_id) {
       await axios.put("/api/products", { ...data, _id });
     } else {
@@ -82,8 +90,10 @@ export default function ProductForm({
         ></input>
 
         <label>Category</label>
-        <select>
+        <select value={category} onChange={(e) => setCategory(e.target.value)}>
           <option value="">no category</option>
+          {categories.length > 0 &&
+            categories.map((c) => <option value={c._id}>{c.name}</option>)}
         </select>
 
         <label>Photos</label>
