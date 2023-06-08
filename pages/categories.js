@@ -26,9 +26,9 @@ function Categories({ swal }) {
     const data = {
       name,
       parentCategory,
-      properties: properties.map((property) => ({
-        name: property.name,
-        values: property.values.split(",")
+      properties: properties.map((p) => ({
+        name: p.name,
+        values: p.values.split(",")
       }))
     };
     if (editView) {
@@ -48,11 +48,13 @@ function Categories({ swal }) {
   function editCategory(c) {
     setEditView(c);
     setName(c.name);
-    if (c.parent) {
-      setParentCategory(c.parent._id);
-    } else {
-      setParentCategory("");
-    }
+    setParentCategory(c.parent?._id);
+    setProperties(
+      c.properties.map(({ name, values }) => ({
+        name,
+        values: values.join(",")
+      }))
+    );
   }
 
   function deleteCategory(c) {
@@ -63,6 +65,7 @@ function Categories({ swal }) {
         showCancelButton: true,
         cancelButtonText: "Cancel",
         confirmButtonText: "Yes",
+        reverseButtons: true,
         didOpen: () => {
           // run when swal is opened...
         },
@@ -162,7 +165,7 @@ function Categories({ swal }) {
                 ></input>
                 <button
                   type="button"
-                  className="btn-default"
+                  className="btn-red"
                   onClick={() => removeProperty(index)}
                 >
                   remove
@@ -177,7 +180,9 @@ function Categories({ swal }) {
               className="btn-default"
               onClick={() => {
                 setEditView(null);
-                setName(""), setParentCategory("");
+                setName("");
+                setParentCategory("");
+                setProperties([]);
               }}
             >
               cancel
@@ -206,13 +211,13 @@ function Categories({ swal }) {
                   <td>{c?.parent?.name}</td>
                   <td>
                     <button
-                      className="btn-primary mr-1"
+                      className="btn-default mr-1"
                       onClick={() => editCategory(c)}
                     >
                       Edit
                     </button>
                     <button
-                      className="btn-primary"
+                      className="btn-red"
                       onClick={() => deleteCategory(c)}
                     >
                       Delete
@@ -229,8 +234,8 @@ function Categories({ swal }) {
 const swalWithCustomStyle = Swal.mixin({
   customClass: {
     title: "font-semibold text-3xl",
-    confirmButton: "btn-primary",
-    cancelButton: "btn-primary mx-1"
+    confirmButton: "btn-red",
+    cancelButton: "btn-default mx-1"
   },
   buttonsStyling: false
 });

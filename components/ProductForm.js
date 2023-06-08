@@ -12,7 +12,8 @@ export default function ProductForm({
   price: currentPrice,
   state,
   images: existingImages,
-  category: assignedCategory
+  category: assignedCategory,
+  properties: assignedProperties
 }) {
   const [title, setTitle] = useState(currentTitle || "");
   const [description, setDescription] = useState(currentDesc || "");
@@ -22,6 +23,9 @@ export default function ProductForm({
   const [isUploading, setIsUploading] = useState(false);
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState(assignedCategory || "");
+  const [productProperties, setProductProperties] = useState(
+    assignedProperties || {}
+  );
   const router = useRouter();
 
   useEffect(() => {
@@ -44,7 +48,14 @@ export default function ProductForm({
 
   async function saveProduct(e) {
     e.preventDefault();
-    const data = { title, description, price, images, category };
+    const data = {
+      title,
+      description,
+      price,
+      images,
+      category,
+      properties: productProperties
+    };
     if (_id) {
       await axios.put("/api/products", { ...data, _id });
     } else {
@@ -76,6 +87,26 @@ export default function ProductForm({
     setImages(images);
   }
 
+  function setProductProp(propName, value) {
+    setProductProperties((prev) => {
+      const newProductProps = { ...prev };
+      newProductProps[propName] = value;
+      return newProductProps;
+    });
+  }
+
+  const properties = [];
+  if (categories.length > 0 && category) {
+    let catInfo = categories.find(({ _id }) => _id === category);
+    properties.push(...catInfo.properties);
+    while (catInfo?.parent?._id) {
+      const parentCat = categories.find(
+        ({ _id }) => _id === catInfo?.parent?._id
+      );
+      properties.push(...parentCat.properties);
+      catInfo = parentCat;
+    }
+  }
   return (
     <Layout>
       <form onSubmit={saveProduct}>
@@ -96,6 +127,24 @@ export default function ProductForm({
             categories.map((c) => <option value={c._id}>{c.name}</option>)}
         </select>
 
+        {properties.length > 0 &&
+          properties.map((p) => (
+            <div className="">
+              <label>{p.name[0].toUpperCase() + p.name.substring(1)}:</label>
+              <div>
+                <select
+                  value={productProperties[p.name]}
+                  onChange={(e) => setProductProp(p.name, e.target.value)}
+                >
+                  {p.values.map((v) => (
+                    <option key={v} value={v}>
+                      {v}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          ))}
         <label>Photos</label>
         <div className="mb-2 flex flex-wrap gap-1">
           <ReactSortable
@@ -107,7 +156,7 @@ export default function ProductForm({
               images.map((link) => (
                 <div
                   key={link}
-                  className="h-24 bg-white shadow-sm rounded-sm border border-gray-200"
+                  className="h-24 bg-white shadow-sm rounded rouded-sm border border-gray-200 p-1"
                 >
                   <img src={link} alt="" className="rounded-lg" />
                 </div>
@@ -118,7 +167,7 @@ export default function ProductForm({
               <Spinner />
             </div>
           )}
-          <label className="bg-gray-200 cursor-pointer rounded rouded-lg w-24 h-24 text-center flex text-sm gap-1 text-gray-500 items-center justify-center">
+          <label className="bg-white shadow-sm border border-primary cursor-pointer rounded rouded-sm w-24 h-24 text-center flex flex-col text-sm gap-1 text-primary items-center justify-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -133,7 +182,7 @@ export default function ProductForm({
                 d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
               />
             </svg>
-            <div>Upload</div>
+            <div>Add image</div>
             <input type="file" name="" className="hidden" onChange={upload} />
           </label>
           {!images?.length && <div>no images</div>}
