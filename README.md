@@ -1,3 +1,5 @@
+Tailwindcss was used for styling. The full app was build using Next.js. Database is hosted on Atlas MongoDB. Images are hosted on AWS.
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
