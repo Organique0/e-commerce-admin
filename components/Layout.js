@@ -46,7 +46,7 @@ export default function Layout({ children }) {
       </div>
 
       <div className=" flex">
-        <Nav show={showNav} />
+        <Nav show={showNav} setShowNav={setShowNav} />
         <div className="flex-grow p-4">{children}</div>
       </div>
     </div>

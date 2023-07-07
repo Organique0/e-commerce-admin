@@ -10,7 +10,7 @@ export default function Home() {
           hello,
           <b> {session?.user?.name}</b>
         </h2>
-        <div className="flex bg-gray-200 text-black gap-1 rounded-lg overflow-hidden">
+        <div className="flex bg-gray-200 text-black gap-1 overflow-hidden h-full">
           <img src={session?.user?.image} alt="" className="w-6 h-6" />
           <span className="px-2">{session?.user?.name}</span>
         </div>
