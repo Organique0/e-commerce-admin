@@ -58,7 +58,8 @@ function SettingsPage({ swal }) {
     <Layout>
       <h1>Your store settings</h1>
       {isLoading ? (
-        <Spinner></Spinner>
+        <Spinner fullwidth={true}/>
+        
       ) : (
         <div className="w-6/12">
           <label>Featured product</label>

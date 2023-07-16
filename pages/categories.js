@@ -1,4 +1,5 @@
 import Layout from "@/components/Layout";
+import Spinner from "@/components/Spinner";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -10,14 +11,17 @@ function Categories({ swal }) {
   const [parentCategory, setParentCategory] = useState("");
   const [editView, setEditView] = useState(null);
   const [properties, setProperties] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     fetchCategories();
   }, []);
 
   function fetchCategories() {
     axios.get("api/categories").then((result) => {
       setCategories(result.data);
+      setIsLoading(false);
     });
   }
 
@@ -208,6 +212,15 @@ function Categories({ swal }) {
             </tr>
           </thead>
           <tbody>
+            {isLoading && (
+            <tr>
+              <td colSpan={2}>
+                <div className="py-4">
+                  <Spinner fullwidth={true} />
+                </div>
+              </td>
+            </tr>
+          )}
             {categories.length > 0 &&
               categories.map((c) => (
                 <tr value={c._id} key={c._id}>

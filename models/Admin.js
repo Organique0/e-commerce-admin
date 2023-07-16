@@ -1,4 +1,4 @@
-import { model, models, Schema } from "mongoose";
+const { Schema, model, models } = require("mongoose");
 
 const AdminSchema = new Schema(
   {

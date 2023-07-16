@@ -58,10 +58,12 @@ function AdminsPage({ swal }) {
   function getAdmins() {
     axios.get("/api/admins").then((response) => {
       setAdminEmails(response.data);
+      setIsLoading(false);
     });
   }
 
   useEffect(() => {
+    setIsLoading(true);
     getAdmins();
   }, []);
 

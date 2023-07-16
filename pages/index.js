@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <Layout>
       <div className="tex-blue-900 flex justify-between">
-        <h2>
+        <h2 className="mt-0">
           hello,
           <b> {session?.user?.name}</b>
         </h2>
