@@ -46,7 +46,7 @@ export default function HomeStats() {
   }
   return (
     <>
-      <div className="border">
+      <div className="">
         <h2>Orders</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="bg-white shadow-md p-4">
