@@ -152,7 +152,7 @@ function Categories({ swal }) {
           </button>
           {properties.length > 0 &&
             properties.map((prop, index) => (
-              <div className="flex gap-1 mb-2">
+              <div className="flex gap-1 mb-2" key={index}>
                 <input
                   className="mb-0"
                   value={prop.name}
@@ -213,14 +213,14 @@ function Categories({ swal }) {
           </thead>
           <tbody>
             {isLoading && (
-            <tr>
-              <td colSpan={2}>
-                <div className="py-4">
-                  <Spinner fullwidth={true} />
-                </div>
-              </td>
-            </tr>
-          )}
+              <tr>
+                <td colSpan={2}>
+                  <div className="py-4">
+                    <Spinner fullwidth={true} />
+                  </div>
+                </td>
+              </tr>
+            )}
             {categories.length > 0 &&
               categories.map((c) => (
                 <tr value={c._id} key={c._id}>

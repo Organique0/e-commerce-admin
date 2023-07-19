@@ -62,11 +62,11 @@ export default function OrdersPage() {
                 </td>
                 <td>
                   {order.line_items.map((line) => (
-                    <>
+                    <div key={Math.random()}>
                       {line.price_data?.product_data.name +
                         " x" +
                         line.quantity}
-                    </>
+                    </div>
                   ))}
                 </td>
               </tr>

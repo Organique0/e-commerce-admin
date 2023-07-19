@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 
 function SettingsPage({ swal }) {
   const [products, setProducts] = useState([]);
-  const [featuredProductId, setFeaturedProductId] = useState(null);
+  const [featuredProductId, setFeaturedProductId] = useState(undefined);
   const [shippingFee, setShippingFee] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -58,8 +58,7 @@ function SettingsPage({ swal }) {
     <Layout>
       <h1>Your store settings</h1>
       {isLoading ? (
-        <Spinner fullwidth={true}/>
-        
+        <Spinner fullwidth={true} />
       ) : (
         <div className="w-6/12">
           <label>Featured product</label>
@@ -70,7 +69,11 @@ function SettingsPage({ swal }) {
             className="focus:outline-none focus:ring-1 focus:ring-primary"
           >
             {products.length > 0 &&
-              products.map((p) => <option value={p._id}>{p.title}</option>)}
+              products.map((p) => (
+                <option value={p._id} key={p._id}>
+                  {p.title}
+                </option>
+              ))}
           </select>
           <br />
           <label>Shipping cost</label>

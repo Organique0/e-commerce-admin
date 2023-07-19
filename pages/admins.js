@@ -136,7 +136,7 @@ function AdminsPage({ swal }) {
           )}
           {adminEmails.length > 0 &&
             adminEmails.map((m) => (
-              <tr>
+              <tr key={m._id}>
                 <td>{m.email}</td>
                 <td>{m.createdAt && prettifyDate(m.createdAt)}</td>
                 <td>
